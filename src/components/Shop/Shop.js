@@ -38,11 +38,22 @@ const Shop = () => {
 
 
 
-   const handleAddToCart = (product) => {
-      console.log(product);
-      const newCart = [...cart, product]
+   const handleAddToCart = (selectedProduct) => {
+      console.log(selectedProduct);
+      let newCart = [];
+      const exits = cart.find(product => product.id === selectedProduct.id)
+      if (!exits) {
+         selectedProduct.quantity = 1;
+         newCart = [...cart, selectedProduct];
+      }
+      else {
+         const rest = cart.filter(product => product.id !== selectedProduct.id);
+         exits.quantity = exits.quantity + 1;
+         newCart = [...rest, exits];
+      }
+
       setCart(newCart);
-      addToDb(product.id);
+      addToDb(selectedProduct.id);
    }
    return (
       <div className='shop-container'>
